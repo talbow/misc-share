@@ -1,0 +1,26 @@
+---
+
+- hosts: ROUTERS
+  gather_facts: false  
+  connection: local
+
+  tasks:
+    - name: Enable command
+      ios_command:
+        commands:
+          - command: enable
+            prompt: 'Password'
+            answer: "{{ ansible_ssh_pass }}"
+#    - name: Change hostname of FISERV01
+#      ios_config:
+#        lines: 
+#          - hostname FISERV01
+#          - no ntp server 192.168.1.1
+    - name: Push config file
+      ios_config:
+#        src: "./ios_commands/csr1000v_initial.txt"
+        src: "./ios_commands/csr1000v_1NET_01_CONFIG.txt"
+
+    - name: Save running to startup when modified
+      ios_config:
+        save_when:  modified
